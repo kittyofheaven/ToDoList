@@ -8,47 +8,28 @@
 import SwiftUI
 
 struct LoginView: View {
-    
-    @State var loginEmail: String = "";
-    @State var loginPassword: String = "";
+    @StateObject var loginViewModel = LoginViewViewModel( )
     
     var body: some View {
         
         VStack{
             //Header
-            ZStack{
-                Rectangle()
-                    .foregroundColor(.pink)
-                    .rotationEffect(Angle(degrees: 15))
-                
-                VStack{
-                    Text("To Do List")
-                        .foregroundColor(.white)
-                        .font(.system(size: 50))
-                        .bold()
-                    
-                    Text("Get Things in Here Done !!!")
-                        .foregroundColor(.white)
-                        .font(.system(size: 20))
-                }
-                .offset(/*@START_MENU_TOKEN@*/CGSize(width: 10.0, height: 10.0)/*@END_MENU_TOKEN@*/)
-                
-            }
-            .frame(width: UIScreen.main.bounds.width * 3, //UIScreen.main.bounds.width itu widthnya 1 screen.
-                   height: 300)
-            .offset(y: -95) //buat mindahin bisa x atau y
-             
+            HeaderView(title: "To Do List", subtitle: "Get Things in Here Done !!!", rotationDegrees: 15, backgroundColor: Color("MainColor"))
             
             //Login Form
             ZStack{
                 Form{
                     
-                    TextField("Email Adress", text: $loginEmail)
+                    TextField("Email Adress", text: $loginViewModel.loginEmail)
+                        .autocorrectionDisabled()
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
 
-                    SecureField("Password", text: $loginPassword)
+                    SecureField("Password", text: $loginViewModel.loginPassword)
                     
                     Button(action: {
-                        //Attempt Login
+                        
+                        loginViewModel.login()
+                        
                     }, label: {
                         ZStack{
                             RoundedRectangle(cornerRadius: 5)
@@ -64,19 +45,13 @@ struct LoginView: View {
                 
             
             
-            
+            //Create Account
             VStack{
                 Text("New around here ?")
                 NavigationLink("Create New Account", destination: RegisterView())
                     .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
             }
             .padding(.bottom, 30)
-            
-            
-            
-            //Create Account
-            
-//            Spacer()
         }
     }
 }
