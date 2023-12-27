@@ -8,10 +8,7 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @State var registerFullName:String = "";
-    @State var registerEmail:String = "";
-    @State var registerPassword:String = "";
-    @State var confirmRegisterPassword:String = "";
+    @StateObject var registerViewModel = RegisterViewViewModel()
     
     var body: some View {
         VStack{
@@ -22,21 +19,26 @@ struct RegisterView: View {
             //Login Form
             ZStack{
                 Form{
-                    TextField("Full Name", text: $registerFullName)
+                    TextField("Full Name", text: $registerViewModel.registerFullName)
                         .autocorrectionDisabled()
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     
-                    TextField("Email Adress", text: $registerEmail)
+                    TextField("Email Adress", text: $registerViewModel.registerEmail)
                         .autocorrectionDisabled()
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
 
-                    SecureField("Password", text: $registerPassword)
+                    SecureField("Password", text: $registerViewModel.registerPassword)
                     
-                    SecureField("Confirm Password", text: $confirmRegisterPassword)
+                    SecureField("Confirm Password", text: $registerViewModel.confirmRegisterPassword)
+                    
+                    if !registerViewModel.errorMessage.isEmpty {
+                        Text(registerViewModel.errorMessage)
+                            .foregroundColor(.red)
+                    }
                     
                     Button(action: {
                         
-                        //Attempt Register
+                        registerViewModel.register()
                         
                     }, label: {
                         ZStack{

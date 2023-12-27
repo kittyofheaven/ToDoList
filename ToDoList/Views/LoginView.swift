@@ -26,6 +26,11 @@ struct LoginView: View {
 
                     SecureField("Password", text: $loginViewModel.loginPassword)
                     
+                    if !loginViewModel.errorMessage.isEmpty {
+                        Text(loginViewModel.errorMessage)
+                            .foregroundColor(.red)
+                    }
+                    
                     Button(action: {
                         
                         loginViewModel.login()

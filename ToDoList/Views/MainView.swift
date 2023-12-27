@@ -8,9 +8,28 @@
 import SwiftUI
 
 struct MainView: View {
+    @StateObject var mainViewModel = MainViewViewModel()
+    
     var body: some View {
-        NavigationView {
-            LoginView()
+        
+        if mainViewModel.isSignedIn, !mainViewModel.currentUserId.isEmpty {
+            
+            TabView{ // buat ngasih bar dibawahnya
+                ToDoListView(userId : mainViewModel.currentUserId)
+                    .tabItem {
+                        Label("Home", systemImage : "house")
+                    }
+                
+                ProfileView()
+                    .tabItem {
+                        Label("Profile", systemImage : "person.circle")
+                    }
+            }
+             
+        } else {
+            NavigationView {
+                LoginView()
+            }
         }
     }
 }
